@@ -17,7 +17,7 @@ enrollment_2020 <- read_excel("class_enrollment_summary_by_term2.18.20.xlsx", sk
 enrollment_2020 <- clean_names(enrollment_2020, case = "snake") %>% filter(! is.na(course_name))
 ```
 
-```{r}
+```{r top gov classes}
  enrollment_2020 %>%
   filter(course_department == "Government") %>%
   arrange(desc(total)) %>%
@@ -28,12 +28,12 @@ enrollment_2020 <- clean_names(enrollment_2020, case = "snake") %>% filter(! is.
   tab_header(title = "Top Five Government Classes by Enrollment")
 ```
 
-```{r}
+```{r department questions}
 departments <- enrollment_2020 %>% 
   group_by(course_department) %>%
   summarise(sum = sum(total)) %>%
   arrange(desc(sum)) %>%
-  slice(1:5)
+  slice(2:6)
 
 
 ```
