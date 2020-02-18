@@ -1,0 +1,40 @@
+---
+title: "Enrollment Project"
+author: "Cassidy Bargell"
+date: "2/18/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(reprex)
+library(readr)
+library(readxl)
+library(janitor)
+library(gt)
+enrollment_2020 <- read_excel("class_enrollment_summary_by_term2.18.20.xlsx", skip = 3)
+enrollment_2020 <- clean_names(enrollment_2020, case = "snake") %>% filter(! is.na(course_name))
+```
+
+```{r}
+ enrollment_2020 %>%
+  filter(course_department == "Government") %>%
+  arrange(desc(total)) %>%
+  slice(1:5) %>%
+  select(course_title, instructor_full_name, course_name, total) %>%
+  gt() %>% 
+  cols_label(course_title = "Course Title", instructor_full_name = "Instructor Full Name", course_name = "Course Name", total = "Total Enrollment") %>%
+  tab_header(title = "Top Five Government Classes by Enrollment")
+```
+
+```{r}
+departments <- enrollment_2020 %>% 
+  group_by(course_department) %>%
+  summarise(sum = sum(total)) %>%
+  arrange(desc(sum)) %>%
+  slice(1:5)
+
+
+```
+
